@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/style/styles.css">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <main>
+        <section id="contact" class="contact">
+            <div class="glitch-form-wrapper">
+                <form class="glitch-card" id="contact-form" method="POST" action="/send-email">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <h2>Entre em <span>contato</span></h2>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" required="" placeholder="" />
+                            <label for="name" class="form-label" data-text="NOME">NOME</label>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" required="" placeholder="" />
+                            <label for="email" class="form-label" data-text="E-MAIL">E-MAIL</label>
+                        </div>
+
+                        <div class="form-group">
+                            <textarea id="message" name="message" required="" placeholder="" rows="4"></textarea>
+                            <label for="message" class="form-label" data-text="MENSAGEM">MENSAGEM</label>
+                        </div>
+
+                        <button data-text="SEND_MESSAGE" type="submit" class="submit-btn">
+                            <span class="btn-text">SEND_MESSAGE <i class="fa-solid fa-envelope"></i></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="form-status" id="form-status" aria-live="polite" role="status" hidden>
+                <div class="status-icon"><i class="fa-solid fa-circle-notch fa-spin"></i></div>
+                <div class="status-title">Status</div>
+                <div class="status-message">Aguardando envio...</div>
+                <div class="status-progress"></div>
+            </div>
+        </section>
+
+    </main>
+
+
+    <script src="assets/src/script.js"></script>
+</body>
+
+</html>

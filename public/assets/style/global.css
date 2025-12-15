@@ -1,0 +1,118 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-family);
+}
+
+:root {
+    --card-black: #000000;
+    --brand-color: #7fffd4;
+    --brand-glow: #00ffd0;
+
+    --master-black: #000000;
+    --master-white: #ffffff;
+
+    --background-color: #070707;
+
+    --surface-color: #0d0d0d;
+    --surface-opacity: #2424243f;
+    --surface-clear: rgba(255, 255, 255, 0.09);
+    --surface-gradient: linear-gradient(45deg,
+            #111 0%,
+            #111 25%,
+            #111 50%,
+            #111 75%,
+            #111 100%);
+    --surface-highlight: rgba(127, 255, 212, 0.3);
+
+    --text-color-primary: #ffffff;
+    --text-color-secondary: #afafaf;
+    --text-color-accent: var(--brand-color);
+
+    --shadow-dark: rgba(0, 0, 0, 0.93);
+    --shadow-color: rgba(68, 179, 142, 0.5);
+    --shadow-glow: rgba(0, 255, 208, 0.5);
+    --shadow-nav: rgba(0, 255, 208, 0.9);
+    --shadow-opacity: rgba(0, 242, 234, 0.08);
+
+    --sombra: rgba(0, 0, 0, 0.93);
+
+    --font-family: "Poppins", sans-serif;
+    --font-heading: 'Orbitron', sans-serif;
+    --font-family2: "Fira Code", Consolas, "Courier New", Courier, monospace;
+
+    --text-xl: 2.5rem;
+    --text-xlg: 2.25rem;
+    --text-lg: 2rem;
+    --text-mdlg: 1.75rem;
+    --text-md: 1.5rem;
+    --text-smd: 1rem;
+    --text-sm: 0.875rem;
+}
+
+.light-theme {
+    --brand-color: #9145e9;
+    --brand-glow: #6e23b9;
+
+    --master-black: #ffffff;
+    --master-white: #000000;
+
+    --background-color: #f0f0f0;
+
+    --surface-color: #e0e0e0;
+    --surface-opacity: #e0e0e03f;
+    --surface-clear: #d0d0d03f;
+    --surface-gradient: linear-gradient(45deg, #f0f0f0 0%, #d0d0d0 100%);
+
+    --text-color-primary: #000000;
+    --text-color-secondary: #333333;
+
+    --shadow-header: rgba(0, 0, 0, 0.3);
+    --shadow-dark: rgb(255, 255, 255);
+    --shadow-color: rgba(115, 23, 177, 0.4);
+    --shadow-glow: rgba(119, 0, 255, 0.4);
+    --shadow-nav: rgba(119, 0, 255, 0.8);
+    --shadow-opacity: rgba(113, 0, 242, 0.20);
+
+}
+
+body {
+    font-size: var(--text-md);
+    color: var(--text-color-secondary);
+    background-color: var(--master-black);
+    background-image: url('assets/imgs/banner.mp4');
+    overflow-x: hidden;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+
+/* Scroll reveal utility classes */
+.reveal {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 600ms ease, transform 600ms ease;
+    will-change: opacity, transform;
+}
+
+.reveal.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Optional: allow delay via CSS variable */
+.reveal[data-delay] {
+    transition-delay: var(--delay, 0ms);
+}
+
+@media screen and (max-width: 768px) {
+  input, 
+  textarea, 
+  select {
+    font-size: 16px !important;
+  }
+}
