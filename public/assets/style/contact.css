@@ -514,7 +514,7 @@
 
 .nav-btn.secondary:hover {
   background: var(--shadow-glow);
-  color: black;
+  color: white;
   box-shadow: 0 0 15px var(--shadow-glow);
 }
 
