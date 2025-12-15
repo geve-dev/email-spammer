@@ -343,56 +343,7 @@
   box-shadow: 0 0 25px var(--shadow-opacity);
 }
 
-@media (max-width: 1100px) {
-  .glitch-card {
-    width: 80vw;
-  }
 
-}
-
-@media (max-width: 800px) {
-  .contact {
-    margin-top: 870px;
-  }
-
-  .submit-btn {
-    width: 100%;
-    font-size: var(--text-sm);
-    padding: 10px;
-  }
-
-  .form-group input,
-  .form-group textarea {
-    padding: 0.5em 0;
-    font-size: 16px;
-  }
-
-  .form-label {
-    font-size: var(--text-sm);
-  }
-}
-
-@media (max-width: 600px) {
-  .contact {
-    margin-top: 300px;
-  }
-
-  .submit-btn {
-    width: 100%;
-    font-size: var(--text-sm);
-    padding: 10px;
-  }
-
-  .form-group input,
-  .form-group textarea {
-    padding: 0.5em 0;
-    font-size: 16px;
-  }
-
-  .form-label {
-    font-size: var(--text-sm);
-  }
-}
 
 /* Multi-step Form Styles */
 .form-step {
@@ -529,4 +480,192 @@
   /* flex-grow: 1; removed */
   margin-left: auto;
   /* Aligns to right like the next button */
+}
+
+
+/* Enhanced Email List Styles */
+.email-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--shadow-glow);
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.email-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--brand-glow);
+}
+
+.email-content {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.email-number {
+  color: var(--brand-glow);
+  margin-right: 10px;
+  font-weight: bold;
+  min-width: 25px;
+}
+
+.email-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text-color-primary);
+}
+
+.email-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 5px;
+  border-radius: 4px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn.delete {
+  color: #ff4444;
+}
+
+.icon-btn.delete:hover {
+  background: rgba(255, 68, 68, 0.1);
+  transform: scale(1.1);
+}
+
+.icon-btn.edit {
+  color: var(--brand-glow);
+}
+
+.icon-btn.edit:hover {
+  background: rgba(0, 255, 208, 0.1);
+  transform: scale(1.1);
+}
+
+.icon-btn.save {
+  color: #4caf50;
+}
+
+.icon-btn.save:hover {
+  background: rgba(76, 175, 80, 0.1);
+  transform: scale(1.1);
+}
+
+.icon-btn.cancel {
+  color: #ff9800;
+  /* Orange for cancel */
+}
+
+.icon-btn.cancel:hover {
+  background: rgba(255, 152, 0, 0.1);
+  transform: scale(1.1);
+}
+
+
+/* Edit Mode Styles */
+.email-edit-input {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--brand-glow);
+  color: var(--text-color-primary);
+  padding: 4px 8px;
+  border-radius: 4px;
+  width: 100%;
+  outline: none;
+  font-family: inherit;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 1100px) {
+  .glitch-card {
+    width: 80vw;
+  }
+
+}
+
+@media (max-width: 800px) {
+  .contact {
+    margin-top: 870px;
+  }
+
+  .submit-btn {
+    width: 100%;
+    font-size: var(--text-sm);
+    padding: 10px;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    padding: 0.5em 0;
+    font-size: 16px;
+  }
+
+  .form-label {
+    font-size: var(--text-sm);
+  }
+}
+
+@media (max-width: 600px) {
+  .contact {
+    margin-top: 300px;
+  }
+
+  .submit-btn {
+    width: 100%;
+    font-size: var(--text-sm);
+    padding: 10px;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    padding: 0.5em 0;
+    font-size: 16px;
+  }
+
+  .form-label {
+    font-size: var(--text-sm);
+  }
+
+  .email-item {
+    padding: 0.5rem;
+    flex-direction: row;
+    /* Keep row but ensure wrapping if needed or just truncation */
+  }
+
+  .email-text {
+    font-size: 0.9rem;
+    max-width: 150px;
+    /* Force truncation on small screens */
+  }
+
+  .email-content {
+    margin-right: 5px;
+  }
+
+  .email-number {
+    font-size: 1rem;
+  }
+
+  .icon-btn {
+    padding: 4px;
+    /* Smaller touch target request */
+    font-size: 0.9rem;
+  }
 }

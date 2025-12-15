@@ -46,11 +46,12 @@ const submitBtn = document.getElementById('submitBtn');
 
 // Email List Management
 let emailList = [];
-
 const emailInput = document.getElementById('emailInput');
 const addEmailBtn = document.getElementById('addEmailBtn');
 const emailListContainer = document.getElementById('emailListContainer');
 const recipientsInput = document.getElementById('recipients');
+let editIndex = null; // Track which email is being edited
+
 
 function renderEmailList() {
     if (!emailListContainer) return;
@@ -58,30 +59,72 @@ function renderEmailList() {
     emailList.forEach((email, index) => {
         const item = document.createElement('div');
         item.className = 'email-item';
-        item.style.display = 'flex';
-        item.style.alignItems = 'center';
-        item.style.justifyContent = 'space-between';
-        item.style.padding = '0.5rem';
-        item.style.marginBottom = '0.5rem';
-        item.style.background = 'rgba(255, 255, 255, 0.05)';
-        item.style.border = '1px solid var(--shadow-glow)';
-        item.style.borderRadius = '4px';
 
-        const textSpan = document.createElement('span');
-        textSpan.innerHTML = `<strong style="color: var(--brand-glow); margin-right: 10px;">#${index + 1}</strong> ${email}`;
+        if (editIndex === index) {
+            // Edit Mode
+            const input = document.createElement('input');
+            input.type = 'email';
+            input.value = email;
+            input.className = 'email-edit-input';
 
-        const removeBtn = document.createElement('button');
-        removeBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
-        removeBtn.type = 'button';
-        removeBtn.style.background = 'transparent';
-        removeBtn.style.border = 'none';
-        removeBtn.style.color = '#ff4444';
-        removeBtn.style.cursor = 'pointer';
-        removeBtn.style.fontSize = '1rem';
-        removeBtn.onclick = () => removeEmail(index);
+            // Add keydown listener for Enter within edit input
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    e.stopPropagation(); // Stop propagation to prevent form wizard nav
+                    saveEmail(index, input.value);
+                }
+            });
 
-        item.appendChild(textSpan);
-        item.appendChild(removeBtn);
+            const actionsDiv = document.createElement('div');
+            actionsDiv.className = 'email-actions';
+
+            const saveBtn = document.createElement('button');
+            saveBtn.innerHTML = '<i class="fa-solid fa-check"></i>';
+            saveBtn.className = 'icon-btn save';
+            saveBtn.onclick = () => saveEmail(index, input.value);
+
+            const cancelBtn = document.createElement('button');
+            cancelBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+            cancelBtn.className = 'icon-btn cancel';
+            cancelBtn.onclick = () => cancelEdit();
+
+            actionsDiv.appendChild(saveBtn);
+            actionsDiv.appendChild(cancelBtn);
+
+            item.appendChild(input);
+            item.appendChild(actionsDiv);
+
+            // Auto focus the input
+            setTimeout(() => input.focus(), 50);
+
+        } else {
+            // View Mode
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'email-content';
+
+            contentDiv.innerHTML = `<span class="email-number">#${index + 1}</span><span class="email-text" title="${email}">${email}</span>`;
+
+            const actionsDiv = document.createElement('div');
+            actionsDiv.className = 'email-actions';
+
+            const editBtn = document.createElement('button');
+            editBtn.innerHTML = '<i class="fa-solid fa-pen"></i>';
+            editBtn.className = 'icon-btn edit';
+            editBtn.onclick = () => editEmail(index);
+
+            const removeBtn = document.createElement('button');
+            removeBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
+            removeBtn.className = 'icon-btn delete';
+            removeBtn.onclick = () => removeEmail(index);
+
+            actionsDiv.appendChild(editBtn);
+            actionsDiv.appendChild(removeBtn);
+
+            item.appendChild(contentDiv);
+            item.appendChild(actionsDiv);
+        }
+
         emailListContainer.appendChild(item);
     });
     updateRecipientsInput();
@@ -105,14 +148,42 @@ function addEmail() {
             alert('Este email já foi adicionado!');
         }
     } else {
-        // Optional: Show invalid email feedback
         emailInput.reportValidity();
     }
 }
 
 function removeEmail(index) {
+    if (editIndex === index) editIndex = null; // Reset edit if removing currently edited item
     emailList.splice(index, 1);
     renderEmailList();
+}
+
+function editEmail(index) {
+    editIndex = index;
+    renderEmailList();
+}
+
+function cancelEdit() {
+    editIndex = null;
+    renderEmailList();
+}
+
+function saveEmail(index, newEmail) {
+    newEmail = newEmail.trim();
+    if (newEmail && validateEmail(newEmail)) {
+        // Check for duplicates (excluding current index)
+        const isDuplicate = emailList.some((email, i) => i !== index && email === newEmail);
+
+        if (!isDuplicate) {
+            emailList[index] = newEmail;
+            editIndex = null;
+            renderEmailList();
+        } else {
+            alert('Este email já existe na lista!');
+        }
+    } else {
+        alert('Email inválido!');
+    }
 }
 
 function validateEmail(email) {
@@ -127,6 +198,7 @@ if (emailInput) {
     emailInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
+            e.stopPropagation(); // Stop propagation to prevent global Enter listener from firing
             addEmail();
         }
     });
