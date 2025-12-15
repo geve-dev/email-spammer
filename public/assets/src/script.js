@@ -44,6 +44,95 @@ const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
 const submitBtn = document.getElementById('submitBtn');
 
+// Email List Management
+let emailList = [];
+
+const emailInput = document.getElementById('emailInput');
+const addEmailBtn = document.getElementById('addEmailBtn');
+const emailListContainer = document.getElementById('emailListContainer');
+const recipientsInput = document.getElementById('recipients');
+
+function renderEmailList() {
+    if (!emailListContainer) return;
+    emailListContainer.innerHTML = '';
+    emailList.forEach((email, index) => {
+        const item = document.createElement('div');
+        item.className = 'email-item';
+        item.style.display = 'flex';
+        item.style.alignItems = 'center';
+        item.style.justifyContent = 'space-between';
+        item.style.padding = '0.5rem';
+        item.style.marginBottom = '0.5rem';
+        item.style.background = 'rgba(255, 255, 255, 0.05)';
+        item.style.border = '1px solid var(--shadow-glow)';
+        item.style.borderRadius = '4px';
+
+        const textSpan = document.createElement('span');
+        textSpan.innerHTML = `<strong style="color: var(--brand-glow); margin-right: 10px;">#${index + 1}</strong> ${email}`;
+
+        const removeBtn = document.createElement('button');
+        removeBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
+        removeBtn.type = 'button';
+        removeBtn.style.background = 'transparent';
+        removeBtn.style.border = 'none';
+        removeBtn.style.color = '#ff4444';
+        removeBtn.style.cursor = 'pointer';
+        removeBtn.style.fontSize = '1rem';
+        removeBtn.onclick = () => removeEmail(index);
+
+        item.appendChild(textSpan);
+        item.appendChild(removeBtn);
+        emailListContainer.appendChild(item);
+    });
+    updateRecipientsInput();
+}
+
+function updateRecipientsInput() {
+    if (recipientsInput) {
+        recipientsInput.value = emailList.join(',');
+    }
+}
+
+function addEmail() {
+    const email = emailInput.value.trim();
+    if (email && validateEmail(email)) {
+        if (!emailList.includes(email)) {
+            emailList.push(email);
+            renderEmailList();
+            emailInput.value = '';
+            emailInput.focus();
+        } else {
+            alert('Este email já foi adicionado!');
+        }
+    } else {
+        // Optional: Show invalid email feedback
+        emailInput.reportValidity();
+    }
+}
+
+function removeEmail(index) {
+    emailList.splice(index, 1);
+    renderEmailList();
+}
+
+function validateEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+if (addEmailBtn) {
+    addEmailBtn.addEventListener('click', addEmail);
+}
+
+if (emailInput) {
+    emailInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            addEmail();
+        }
+    });
+}
+
+
 // Initialize Wizard
 updateWizardUI();
 
@@ -130,12 +219,32 @@ function validateStep(stepIndex) {
     const inputs = currentStepEl.querySelectorAll('input[required], textarea[required]');
     let isValid = true;
 
-    inputs.forEach(input => {
-        if (!input.checkValidity()) {
+    // Special check for Step 2 (Recipients)
+    if (stepIndex === 2) {
+        if (emailList.length === 0) {
             isValid = false;
-            input.reportValidity(); // Shows the browser's native validation bubble
+            // Focus on email input to prompt user
+            if (emailInput) emailInput.focus();
+            // Optional: simple alert or custom UI feedback
+            // alert('Adicione pelo menos um destinatário.');
+            // Or better, show standard validation failure on the hidden input if possible, 
+            // but since it's hidden, we might need a visual cue.
+            // Let's use the reportValidity on the visible input but with a custom message if empty
+            if (emailInput) {
+                emailInput.setCustomValidity("Adicione pelo menos um email à lista.");
+                emailInput.reportValidity();
+                // Reset it immediately so they can type
+                setTimeout(() => emailInput.setCustomValidity(""), 2000);
+            }
         }
-    });
+    } else {
+        inputs.forEach(input => {
+            if (!input.checkValidity()) {
+                isValid = false;
+                input.reportValidity(); // Shows the browser's native validation bubble
+            }
+        });
+    }
 
     return isValid;
 }

@@ -62,12 +62,34 @@
                         <!-- Step 2: Recipients -->
                         <div class="form-step" data-step="2">
                             <h3 class="step-title">Destinatários</h3>
-                            <p class="step-desc">Insira os e-mails separados por vírgula.</p>
-                            <div class="form-group">
-                                <textarea id="recipients" name="recipients" required="" placeholder=""
-                                    rows="6"></textarea>
-                                <label for="recipients" class="form-label" data-text="EMAILS">EMAILS</label>
+                            <p class="step-desc">Insira os e-mails um por um.</p>
+                            <div class="form-group" style="display: flex; gap: 10px; align-items: flex-end;">
+                                <div style="flex-grow: 1; position: relative;">
+                                    <input type="email" id="emailInput" placeholder="" />
+                                    <label for="emailInput" class="form-label" data-text="ADICIONAR EMAIL">ADICIONAR
+                                        EMAIL</label>
+                                </div>
+                                <button type="button" id="addEmailBtn" class="nav-btn secondary"
+                                    style="padding: 0.75em 1.2em; border-width: 1px;">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
                             </div>
+
+                            <!-- List Container -->
+                            <div id="emailListContainer" style="
+                                    margin-top: 1rem; 
+                                    max-height: 200px; 
+                                    overflow-y: auto; 
+                                    padding-right: 5px;
+                                    /* scrollbar styles for webkit */
+                                    scrollbar-width: thin;
+                                    scrollbar-color: var(--brand-glow) rgba(255,255,255,0.1);
+                                ">
+                                <!-- Dynamic Email Items will go here -->
+                            </div>
+
+                            <!-- Hidden textarea to store comma-separated emails for form submission logic -->
+                            <textarea id="recipients" name="recipients" required="" hidden></textarea>
                         </div>
 
                         <!-- Step 3: Content -->
