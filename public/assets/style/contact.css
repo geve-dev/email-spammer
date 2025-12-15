@@ -20,7 +20,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 100px;
   font-family: var(--font-family2);
 }
 
@@ -86,6 +85,11 @@
   font-family: inherit;
   outline: none;
   transition: border-color 0.3s ease;
+  border-radius: 0 !important;
+  /* Force flat border on mobile */
+  -webkit-appearance: none;
+  appearance: none;
+  /* Standard property */
 }
 
 .form-group input:focus {
@@ -161,6 +165,11 @@
   outline: none;
   transition: border-color 0.3s ease;
   resize: vertical;
+  border-radius: 0 !important;
+  /* Force flat border on mobile */
+  -webkit-appearance: none;
+  appearance: none;
+  /* Standard property */
 }
 
 .form-group textarea:focus {
