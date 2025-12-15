@@ -286,7 +286,7 @@ form.addEventListener("submit", async function (event) {
 
         if (response.ok) {
             // 4. Se o envio for bem-sucedido
-            showStatus('success', 'Mensagem enviada', '✅ Recebi sua mensagem! Em breve retorno o contato.', 'fa-solid fa-check');
+            showStatus('success', 'Mensagem enviada', '✅ Sua mensagem foi enviada com sucesso! Volte sempre.', 'fa-solid fa-check');
             form.reset(); // Limpa os campos do formulário
             hideStatus(5000);
         } else {
