@@ -16,7 +16,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Permite que seu frontend se conecte (CORS) - **IMPORTANTE PARA TESTE**
 app.use((req, res, next) => {
     // Permite requisições do seu domínio na Vercel e de previews
-    const allowedOrigins = ['https://portfolio-geve-dev.vercel.app', process.env.VERCEL_URL && `https://${process.env.VERCEL_URL}`];
+    const allowedOrigins = ['https://mass-email.vercel.app', process.env.VERCEL_URL && `https://${process.env.VERCEL_URL}`];
     const origin = req.headers.origin;
     if (allowedOrigins.includes(origin)) {
         res.setHeader('Access-Control-Allow-Origin', origin);
