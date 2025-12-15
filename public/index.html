@@ -22,25 +22,75 @@
                         </div>
                     </div>
 
+                    <!-- Progress Bar -->
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progress-bar"></div>
+                        <div class="step-indicators">
+                            <span class="step-dot active" data-step="1">1</span>
+                            <span class="step-dot" data-step="2">2</span>
+                            <span class="step-dot" data-step="3">3</span>
+                        </div>
+                    </div>
+
                     <div class="card-body">
-                        <div class="form-group">
-                            <input type="text" id="name" name="name" required="" placeholder="" />
-                            <label for="name" class="form-label" data-text="NOME">NOME</label>
+                        <!-- Step 1: Identity -->
+                        <div class="form-step active" data-step="1">
+                            <h3 class="step-title">Identidade</h3>
+                            <div class="form-group">
+                                <input type="text" id="senderName" name="senderName" required="" placeholder="" />
+                                <label for="senderName" class="form-label" data-text="NOME REMETENTE">NOME
+                                    REMETENTE</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" id="senderEmail" name="senderEmail" placeholder="" />
+                                <label for="senderEmail" class="form-label" data-text="EMAIL REMETENTE (OPCIONAL)">EMAIL
+                                    REMETENTE (OPCIONAL)</label>
+                            </div>
+                            <div class="form-group checkbox-group"
+                                style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                                <input type="checkbox" id="showSenderEmail" name="showSenderEmail" style="width: auto;">
+                                <label for="showSenderEmail"
+                                    style="position: static; color: var(--text-color); font-size: 0.9rem; pointer-events: auto;">Usar
+                                    este email como resposta (Reply-To)?</label>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <input type="email" id="email" name="email" required="" placeholder="" />
-                            <label for="email" class="form-label" data-text="E-MAIL">E-MAIL</label>
+                        <!-- Step 2: Recipients -->
+                        <div class="form-step" data-step="2">
+                            <h3 class="step-title">Destinatários</h3>
+                            <p class="step-desc">Insira os e-mails separados por vírgula.</p>
+                            <div class="form-group">
+                                <textarea id="recipients" name="recipients" required="" placeholder=""
+                                    rows="6"></textarea>
+                                <label for="recipients" class="form-label" data-text="EMAILS">EMAILS</label>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <textarea id="message" name="message" required="" placeholder="" rows="4"></textarea>
-                            <label for="message" class="form-label" data-text="MENSAGEM">MENSAGEM</label>
+                        <!-- Step 3: Content -->
+                        <div class="form-step" data-step="3">
+                            <h3 class="step-title">Conteúdo</h3>
+                            <div class="form-group">
+                                <input type="text" id="subject" name="subject" required="" placeholder="" />
+                                <label for="subject" class="form-label" data-text="ASSUNTO">ASSUNTO</label>
+                            </div>
+                            <div class="form-group">
+                                <textarea id="message" name="message" required="" placeholder="" rows="6"></textarea>
+                                <label for="message" class="form-label" data-text="MENSAGEM">MENSAGEM</label>
+                            </div>
                         </div>
 
-                        <button data-text="SEND_MESSAGE" type="submit" class="submit-btn">
-                            <span class="btn-text">SEND_MESSAGE <i class="fa-solid fa-envelope"></i></span>
-                        </button>
+                        <!-- Navigation Buttons -->
+                        <div class="form-navigation">
+                            <button type="button" id="prevBtn" class="nav-btn secondary" hidden>
+                                <i class="fa-solid fa-arrow-left"></i> Voltar
+                            </button>
+                            <button type="button" id="nextBtn" class="nav-btn primary">
+                                Próximo <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                            <button data-text="ENVIAR EMAILS" type="submit" id="submitBtn" class="submit-btn" hidden>
+                                <span class="btn-text">ENVIAR EMAIL <i class="fa-solid fa-paper-plane"></i></span>
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>

@@ -42,33 +42,51 @@ app.get('/', (req, res) => {
 
 
 // Rota POST para receber os dados do formulário
-app.post('/send-email', (req, res) => {
+// Rota POST para receber os dados do formulário
+app.post('/send-email', async (req, res) => {
     // Os dados do formulário estão em req.body
-    const { name, email, mensagem } = req.body;
+    const { recipients, senderName, senderEmail, showSenderEmail, subject, message } = req.body;
 
     // 1. Validar e-mails (Obrigatório)
-    if (!email || !mensagem) {
-        return res.status(400).send('Nome, Email e Mensagem são obrigatórios.');
+    if (!recipients || !message) {
+        return res.status(400).send('Destinatários e Mensagem são obrigatórios.');
     }
 
-    // 2. Montar as opções do e-mail
-    let mailOptions = {
-        from: `"${name}" <${process.env.EMAIL_USER}>`, // O 'from' deve ser o email autenticado
-        to: 'gabrielviniciusdecs@gmail.com', // **SEU EMAIL (Onde você quer receber a mensagem)**
-        replyTo: email, // responderá para o e-mail informado pelo usuário
-        subject: `Nova mensagem de contato de: ${name}`,
-        text: `Remetente: ${email}\n\nMensagem:\n${mensagem}`
-    };
+    // Processar lista de destinatários
+    const recipientList = recipients.split(',').map(email => email.trim()).filter(email => email);
 
-    // 3. Enviar o e-mail
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.error('❌ Erro ao enviar email:', error.message);
-            res.status(500).send('Erro ao enviar o email. Tente novamente mais tarde.');
-        } else {
-            console.log('✅ Email enviado para o servidor SMTP:', info.response);
-            res.status(200).send('Mensagem enviada com sucesso! Obrigado.');
+    if (recipientList.length === 0) {
+        return res.status(400).send('Nenhum destinatário válido encontrado.');
+    }
+
+    let successCount = 0;
+    let failCount = 0;
+
+    // 2. Iterar e enviar para cada um
+    for (const recipient of recipientList) {
+        // Montar as opções do e-mail
+        let mailOptions = {
+            from: `"${senderName || 'Remetente'}" <${process.env.EMAIL_USER}>`, // O 'from' deve ser o email autenticado do SMTP
+            to: recipient,
+            replyTo: showSenderEmail ? senderEmail : undefined, // Se marcado, responde para o email do remetente
+            subject: subject || `Nova mensagem de: ${senderName || 'Desconhecido'}`,
+            text: message // Mensagem simples
+            // html: `<p>${message}</p>` // Se quiser suportar HTML no futuro
+        };
+
+        try {
+            await transporter.sendMail(mailOptions);
+            console.log(`✅ Email enviado para: ${recipient}`);
+            successCount++;
+        } catch (error) {
+            console.error(`❌ Erro ao enviar para ${recipient}:`, error.message);
+            failCount++;
         }
+    }
+
+    res.status(200).json({
+        message: `Envio finalizado. Sucessos: ${successCount}, Falhas: ${failCount}`,
+        stats: { success: successCount, fail: failCount }
     });
 });
 

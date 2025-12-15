@@ -118,6 +118,10 @@
   overflow: hidden;
 }
 
+.submit-btn[hidden] {
+  display: none !important;
+}
+
 .submit-btn:hover,
 .submit-btn:focus {
   background-color: var(--brand-glow);
@@ -161,6 +165,7 @@
 
 .form-group textarea:focus {
   border-color: var(--brand-glow);
+
 }
 
 .form-group textarea:focus+.form-label,
@@ -378,4 +383,141 @@
   .form-label {
     font-size: var(--text-sm);
   }
+}
+
+/* Multi-step Form Styles */
+.form-step {
+  display: none;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.form-step.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.step-title {
+  font-size: 1.2rem;
+  color: var(--master-white);
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.step-desc {
+  color: var(--text-color-primary);
+  opacity: 0.8;
+  margin-bottom: 2.5rem;
+  font-size: 0.9rem;
+}
+
+/* Progress bar */
+.progress-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.progress-bar {
+  height: 100%;
+  background: var(--brand-glow);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+  width: 0%;
+  transition: width 0.4s ease;
+}
+
+.step-indicators {
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 20px;
+}
+
+.step-dot {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--shadow-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--shadow-glow);
+  font-weight: bold;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.step-dot.active {
+  background: var(--brand-glow);
+  color: black;
+  box-shadow: 0 0 15px var(--brand-glow);
+  border-color: var(--brand-glow);
+}
+
+/* Navigation */
+.form-navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+  gap: 1rem;
+}
+
+.nav-btn {
+  padding: 0.8em 1.5em;
+  background: transparent;
+  border: 1px solid var(--brand-glow);
+  color: var(--brand-glow);
+  font-family: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+  background: var(--brand-glow);
+  color: black;
+  box-shadow: 0 0 15px var(--brand-glow);
+}
+
+.nav-btn.secondary {
+  border-color: var(--shadow-glow);
+  color: var(--shadow-glow);
+}
+
+.nav-btn.secondary:hover {
+  background: var(--shadow-glow);
+  color: black;
+  box-shadow: 0 0 15px var(--shadow-glow);
+}
+
+.nav-btn.primary {
+  margin-left: auto;
+}
+
+/* Override existing submit btn margin */
+.submit-btn {
+  margin: 0;
+  width: auto;
+  /* flex-grow: 1; removed */
+  margin-left: auto;
+  /* Aligns to right like the next button */
 }
