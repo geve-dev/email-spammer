@@ -52,6 +52,108 @@ const emailListContainer = document.getElementById('emailListContainer');
 const recipientsInput = document.getElementById('recipients');
 let editIndex = null; // Track which email is being edited
 
+// Email domain suggestions UI
+let suggestionBox;
+const COMMON_DOMAINS = [
+    'gmail.com', 'outlook.com', 'hotmail.com', 'live.com', 'yahoo.com',
+    'icloud.com', 'proton.me', 'protonmail.com', 'aol.com', 'uol.com.br',
+    'bol.com.br', 'terra.com.br', 'globo.com', 'me.com'
+];
+
+function ensureSuggestionBox() {
+    if (!emailInput) return;
+    if (!suggestionBox) {
+        suggestionBox = document.createElement('ul');
+        suggestionBox.id = 'email-suggestions';
+        suggestionBox.style.position = 'absolute';
+        suggestionBox.style.left = '0';
+        suggestionBox.style.right = '0';
+        suggestionBox.style.zIndex = '1000';
+        suggestionBox.style.marginTop = '2px';
+        suggestionBox.style.listStyle = 'none';
+        suggestionBox.style.padding = '2px 0';
+        suggestionBox.style.background = 'rgba(255,255,255,0.2)';
+        suggestionBox.style.border = '1px solid rgba(255,255,255,0.18)';
+        suggestionBox.style.borderRadius = '10px';
+        suggestionBox.style.display = 'none';
+        suggestionBox.style.maxHeight = '90px';
+        suggestionBox.style.overflowY = 'auto';
+        suggestionBox.style.backdropFilter = 'blur(10px)';
+        suggestionBox.style.webkitBackdropFilter = 'blur(10px)';
+        suggestionBox.style.boxShadow = '0 4px 20px rgba(0,0,0,0.25)';
+        suggestionBox.style.outline = '1px solid rgba(255,255,255,0.06)';
+        // container is the parent div that already is position: relative in HTML
+        emailInput.parentElement.appendChild(suggestionBox);
+    }
+}
+
+function hideSuggestions() {
+    if (suggestionBox) suggestionBox.style.display = 'none';
+}
+
+function showSuggestions(items) {
+    ensureSuggestionBox();
+    if (!suggestionBox) return;
+    suggestionBox.innerHTML = '';
+    if (!items.length) {
+        hideSuggestions();
+        return;
+    }
+    items.forEach((s, idx) => {
+        const li = document.createElement('li');
+        li.textContent = s;
+        li.style.padding = '6px 10px';
+        li.style.cursor = 'pointer';
+        li.style.color = 'var(--text-color-primary, #fff)';
+        li.style.fontSize = '0.85rem';
+        li.dataset.index = String(idx);
+        li.addEventListener('mouseenter', () => highlightSuggestion(idx));
+        li.addEventListener('mouseleave', () => clearHighlight(idx));
+        li.addEventListener('mousedown', (e) => { // use mousedown to select before input blur
+            e.preventDefault();
+            applySuggestion(s);
+        });
+        suggestionBox.appendChild(li);
+    });
+    activeIndex = 0;
+    updateActiveItem();
+    suggestionBox.style.display = 'block';
+}
+
+function buildSuggestions(value) {
+    const [local, domainPart] = value.split('@');
+    if (!local || value.endsWith('@')) {
+        // Show full list when user just typed local or ends with @
+        return COMMON_DOMAINS.map(d => `${local || ''}@${d}`);
+    }
+    if (!domainPart) return [];
+    const filtered = COMMON_DOMAINS
+        .filter(d => d.startsWith(domainPart.toLowerCase()))
+        .map(d => `${local}@${d}`);
+    return filtered;
+}
+
+function applySuggestion(fullEmail) {
+    emailInput.value = fullEmail;
+    hideSuggestions();
+}
+
+let activeIndex = -1;
+function updateActiveItem() {
+    if (!suggestionBox) return;
+    const items = suggestionBox.querySelectorAll('li');
+    items.forEach((li, i) => {
+        if (i === activeIndex) {
+            li.style.background = 'rgba(255,255,255,0.12)';
+        } else {
+            li.style.background = 'rgba(0,0,0,0)';
+        }
+    });
+}
+
+function highlightSuggestion(index) { activeIndex = index; updateActiveItem(); }
+function clearHighlight(index) { if (activeIndex === index) { activeIndex = -1; updateActiveItem(); } }
+
 
 function renderEmailList() {
     if (!emailListContainer) return;
@@ -195,11 +297,56 @@ if (addEmailBtn) {
 }
 
 if (emailInput) {
+    ensureSuggestionBox();
+
+    emailInput.addEventListener('input', () => {
+        const v = emailInput.value.trim();
+        if (!v.includes('@')) { hideSuggestions(); return; }
+        const suggestions = buildSuggestions(v).slice(0, 8);
+        if (suggestions.length) showSuggestions(suggestions); else hideSuggestions();
+    });
+
+    emailInput.addEventListener('blur', () => {
+        // Delay to allow click selection
+        setTimeout(() => hideSuggestions(), 150);
+    });
+
+    emailInput.addEventListener('focus', () => {
+        const v = emailInput.value.trim();
+        if (v.includes('@')) {
+            const suggestions = buildSuggestions(v).slice(0, 8);
+            if (suggestions.length) showSuggestions(suggestions);
+        }
+    });
+
     emailInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
+        const isOpen = suggestionBox && suggestionBox.style.display !== 'none';
+        if (e.key === 'ArrowDown' && isOpen) {
             e.preventDefault();
-            e.stopPropagation(); // Stop propagation to prevent global Enter listener from firing
+            activeIndex = Math.min(activeIndex + 1, suggestionBox.children.length - 1);
+            updateActiveItem();
+        } else if (e.key === 'ArrowUp' && isOpen) {
+            e.preventDefault();
+            activeIndex = Math.max(activeIndex - 1, 0);
+            updateActiveItem();
+        } else if ((e.key === 'Tab' || e.key === 'Enter') && isOpen) {
+            // Accept suggestion
+            const items = suggestionBox.querySelectorAll('li');
+            if (items.length && activeIndex >= 0) {
+                e.preventDefault();
+                applySuggestion(items[activeIndex].textContent);
+                if (e.key === 'Enter') { e.stopPropagation(); addEmail(); }
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                e.stopPropagation();
+                addEmail();
+            }
+        } else if (e.key === 'Enter') {
+            e.preventDefault();
+            e.stopPropagation();
             addEmail();
+        } else if (e.key === 'Escape' && isOpen) {
+            hideSuggestions();
         }
     });
 }
