@@ -485,6 +485,7 @@
 .nav-btn.secondary {
   border-color: var(--shadow-glow);
   color: var(--shadow-glow);
+  white-space: nowrap;
 }
 
 .nav-btn.secondary:hover {
@@ -501,6 +502,7 @@
 .submit-btn {
   margin: 0;
   width: auto;
+  white-space: nowrap;
   /* flex-grow: 1; removed */
   margin-left: auto;
   /* Aligns to right like the next button */
@@ -650,8 +652,9 @@
 
   .submit-btn {
     width: 100%;
-    font-size: var(--text-sm);
+    font-size: 0.7rem;
     padding: 10px;
+    
   }
 
   .form-group input,
