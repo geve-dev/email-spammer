@@ -4,6 +4,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  /* Center content vertically */
 }
 
 .contact h2 {
@@ -115,6 +117,7 @@
   margin-right: 10px;
   cursor: pointer;
   accent-color: var(--brand-glow);
+  color: var(--master-black);
   /* Brand glow when selected */
 }
 
@@ -622,9 +625,7 @@
 }
 
 @media (max-width: 800px) {
-  .contact {
-    margin-top: 870px;
-  }
+  /* Removed large margin-top to allow centering */
 
   .submit-btn {
     width: 100%;
@@ -644,9 +645,7 @@
 }
 
 @media (max-width: 600px) {
-  .contact {
-    margin-top: 300px;
-  }
+  /* Removed large margin-top to allow centering */
 
   .submit-btn {
     width: 100%;
