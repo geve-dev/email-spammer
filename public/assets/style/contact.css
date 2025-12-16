@@ -103,6 +103,27 @@
   opacity: 1;
 }
 
+/* Fix for checkbox visibility and style */
+.form-group input[type="checkbox"] {
+  -webkit-appearance: checkbox;
+  /* Restore default appearance */
+  appearance: checkbox;
+  width: auto;
+  /* Ensure it doesn't take full width */
+  height: auto;
+  border: none;
+  margin-right: 10px;
+  cursor: pointer;
+  accent-color: var(--brand-glow);
+  /* Brand glow when selected */
+}
+
+.optional-text {
+  color: var(--text-color-secondary);
+  font-size: 0.85em;
+  font-weight: normal;
+}
+
 .submit-btn {
   width: 80%;
   display: block;
