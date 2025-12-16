@@ -94,13 +94,32 @@ html {
     scroll-behavior: smooth;
 }
 
+/* Ensure content is above video */
+main,
+.contact {
+    position: relative;
+    z-index: 1;
+}
+
+/* Hide scrollbar for email suggestions */
+#email-suggestions::-webkit-scrollbar {
+    display: none;
+}
+
+#email-suggestions {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
 /* Fullscreen background video */
 .bg-video {
     position: fixed;
     inset: 0;
-    z-index: -1; /* behind all content */
+    z-index: -1;
+    /* behind all content */
     overflow: hidden;
-    pointer-events: none; /* never block clicks */
+    pointer-events: none;
+    /* never block clicks */
 }
 
 .bg-video video {
@@ -112,7 +131,8 @@ html {
     width: auto;
     height: auto;
     transform: translate(-50%, -50%);
-    object-fit: cover; /* fill viewport without distortion */
+    object-fit: cover;
+    /* fill viewport without distortion */
     filter: brightness(0.35) contrast(1.05) saturate(1.1);
 }
 
